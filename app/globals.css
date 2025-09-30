@@ -1,6 +1,15 @@
 @import "tailwindcss";
 @plugin '@tailwindcss/typography';
 @import "prism-themes/themes/prism-vsc-dark-plus.css";
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
 
 :root {
   --background: #ffffff;
@@ -16,7 +25,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #090909;
     --foreground: #ededed;
   }
 }
@@ -27,8 +36,13 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/*
 .prose {
   @apply text-neutral-100;
+}
+
+.prose h1 {
+  @apply text-4xl font-bold mb-1
 }
 
 .prose h1,
@@ -37,7 +51,7 @@ body {
 .prose h4,
 .prose h5,
 .prose h6 {
-  @apply text-white mb-2;
+  @apply text-neutral-50 mb-1 pb-1 border-b-2 border-[#1d1d1e];
 }
 
 .prose a {
@@ -50,4 +64,4 @@ body {
 
 .prose blockquote {
   @apply border-l-4 border-gray-300 pl-4 italic text-neutral-400;
-}
+}*/

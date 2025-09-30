@@ -1,19 +1,13 @@
-import postService, { postsLoaded } from "@/services/PostService"
+import BlogContainer from "@/components/BlogContainer";
+import NavBar from "@/components/NavBar";
 
-async function PostPage({ params } : { params : { topic : string } }){
-  const topic = params.topic
-  await postService.loadAll()
-  const post : any = postService.getPostByTitle(topic, "Overview")
+async function PostPage({ params } : { params: Promise<{ topic : string }> }){
+  const param = await params
   return (
-    <div>
-      <div className="flex justify-center mt-5">
-        {
-          post !== null ? <div className="prose w-170" dangerouslySetInnerHTML={{ __html: post.contentHTML }}></div> : <div>not found</div>
-        }
-      </div>
-      <a href="/"> back </a>
+    <div className="h-fit h-max">
+      <NavBar></NavBar>
+      <BlogContainer topic={param.topic}></BlogContainer>
     </div>
   )
 }
-
 export default PostPage

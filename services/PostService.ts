@@ -7,6 +7,7 @@ import rehypeStringify from "rehype-stringify";
 import rehypePrism from "rehype-prism-plus";
 import type { Post } from "@/types/Post";
 import type { TopicMeta } from "@/types/TopicMeta";
+import rehypeRaw from "rehype-raw";
 
 const postsDir : string = path.join(process.cwd(), "posts")
 const postsContainer : Map<string, Post[]> = new Map<string, Post[]>()
@@ -19,7 +20,8 @@ async function dirToPost(dir : string, config : boolean) : Promise<any> {
   const fileContent = fs.readFileSync(dir, 'utf8')
   const matterRes = matter(fileContent)
   const processedContent = await remark()
-                                        .use(remarkRehype)
+                                        .use(remarkRehype, { allowDangerousHtml: true })
+                                        .use(rehypeRaw)
                                         .use(rehypePrism)    
                                         .use(rehypeStringify)
                                         .process(matterRes.content)
@@ -32,7 +34,8 @@ async function dirToPost(dir : string, config : boolean) : Promise<any> {
     'desc' : matterRes.data.desc
   }
   return {
-    'title' : matterRes.data.title || null, 
+    'title' : matterRes.data.title || null,
+    'href' : matterRes.data.href || null,
     'date' : matterRes.data.date || null, 
     'order' : matterRes.data.order || null, 
     'subtopics' : matterRes.data.subtopics || null, 
@@ -86,23 +89,23 @@ class postService {
     return postsContainer.has(topic)
   }
 
-  static titleExistence(topic : string, title : string) : boolean {
+  static titleExistence(topic : string, hrefTitle : string) : boolean {
     if(!this.topicExistence(topic)) return false
     const posts = postsContainer.get(topic)
     if(posts === undefined || posts.length === 0) return false
-    const post = posts.find(post => post.title === title)
+    const post = posts.find(post => post.href === hrefTitle)
     return post !== undefined
   }
 
-  static getPostsbyTopic(topic : string) : Post[] | undefined {
+  static getPostsByTopic(topic : string) : Post[] | undefined {
     if(!this.topicExistence(topic)) return []
     return postsContainer.get(topic)
   }
 
-  static getPostByTitle(topic : string, title : string) : Post | null {
-    if(!this.titleExistence(topic, title)) return null
+  static getPostByTitle(topic : string, hrefTitle : string) : Post | null {
+    if(!this.titleExistence(topic, hrefTitle)) return null
     const posts = postsContainer.get(topic)
-    const post = posts!.find(post => post.title === title)
+    const post = posts!.find(post => post.href === hrefTitle)
     return post!
   }
   

@@ -1,3 +1,4 @@
+'use client';
 import TopicText from "./TopicText";
 
 function ProfileContainer(){
