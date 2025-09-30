@@ -9,7 +9,7 @@ function TagBox( { text } : { text : string } ){
 }
 
 
-function ContentBox({ date, href, topic_text, tags, desc} : { date : string, href : string, topic_text : string, tags : string[], desc : string}){
+function ContentBox({ date, href, topic_text, tags, desc } : { date : string, href : string, topic_text : string, tags : string[], desc : string, key : string }){
   return (
     <a href={"blog/"+href}>
       <div className="border-b-[1px] border-neutral-700 pb-2 pt-2 pl-1.5 transition-colors duration-300 ease-in-out hover:bg-neutral-900">

@@ -8,6 +8,7 @@ import rehypePrism from "rehype-prism-plus";
 import type { Post } from "@/types/Post";
 import type { TopicMeta } from "@/types/TopicMeta";
 import rehypeRaw from "rehype-raw";
+import rehypeSlug from "rehype-slug";
 
 const postsDir : string = path.join(process.cwd(), "posts")
 const postsContainer : Map<string, Post[]> = new Map<string, Post[]>()
@@ -22,6 +23,7 @@ async function dirToPost(dir : string, config : boolean) : Promise<any> {
   const processedContent = await remark()
                                         .use(remarkRehype, { allowDangerousHtml: true })
                                         .use(rehypeRaw)
+                                        .use(rehypeSlug)
                                         .use(rehypePrism)    
                                         .use(rehypeStringify)
                                         .process(matterRes.content)

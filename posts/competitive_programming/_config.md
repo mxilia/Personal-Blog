@@ -3,7 +3,8 @@ topic: "Competitive Programming"
 href : "competitive_programming"
 date: "19/19/19"
 tags:
-  - C
+  - Algorithm
+  - Data Structure
   - C++
 desc: "This is where i teach"
 ---
