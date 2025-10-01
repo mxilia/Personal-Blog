@@ -11,7 +11,6 @@ function ContentList(){
     const load = async () => {
       const result = await axios.get("/api/topics_meta")
       if(result.data) setTopics([...result.data])
-      console.log(result.data)
     }
     load()
   }, [])

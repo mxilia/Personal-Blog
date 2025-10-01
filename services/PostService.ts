@@ -5,10 +5,11 @@ import { remark } from "remark";
 import remarkRehype from "remark-rehype";
 import rehypeStringify from "rehype-stringify";
 import rehypePrism from "rehype-prism-plus";
-import type { Post } from "@/types/Post";
+import type { Heading, Post } from "@/types/Post";
 import type { TopicMeta } from "@/types/TopicMeta";
 import rehypeRaw from "rehype-raw";
 import rehypeSlug from "rehype-slug";
+import { visit } from "unist-util-visit";
 
 const postsDir : string = path.join(process.cwd(), "posts")
 const postsContainer : Map<string, Post[]> = new Map<string, Post[]>()
@@ -20,13 +21,24 @@ let loadPromise: Promise<void> | null = null;
 async function dirToPost(dir : string, config : boolean) : Promise<any> {
   const fileContent = fs.readFileSync(dir, 'utf8')
   const matterRes = matter(fileContent)
+  const headings : Heading[] = []
   const processedContent = await remark()
-                                        .use(remarkRehype, { allowDangerousHtml: true })
-                                        .use(rehypeRaw)
-                                        .use(rehypeSlug)
-                                        .use(rehypePrism)    
-                                        .use(rehypeStringify)
-                                        .process(matterRes.content)
+                                .use(remarkRehype, { allowDangerousHtml: true })
+                                .use(rehypeRaw)
+                                .use(rehypeSlug)
+                                .use(() => (tree) => {
+                                  visit(tree, "element", (node: any) => {
+                                   if (/^h[2-6]$/.test(node.tagName)) {
+                                     headings.push({
+                                        id: node.properties?.id || "",
+                                        text: node.children?.map((c: any) => c.value || "").join("")
+                                      });
+                                    }
+                                  });
+                                })
+                                .use(rehypePrism)    
+                                .use(rehypeStringify)
+                                .process(matterRes.content)
   const contentHTML = processedContent.toString();
   if(config) return {
     'topic' : matterRes.data.topic || null,
@@ -40,7 +52,7 @@ async function dirToPost(dir : string, config : boolean) : Promise<any> {
     'href' : matterRes.data.href || null,
     'date' : matterRes.data.date || null, 
     'order' : matterRes.data.order || null, 
-    'subtopics' : matterRes.data.subtopics || null, 
+    'subtopics' : headings || null, 
     'contentHTML' : contentHTML || ""
   }
 }

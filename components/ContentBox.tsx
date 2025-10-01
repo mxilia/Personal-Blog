@@ -1,7 +1,7 @@
 function TagBox( { text } : { text : string } ){
   return (
     <>
-      <div className="border-2 pl-1 pr-1 border-neutral-400 rounded-[8px] text-[14px]">
+      <div className="border-[1px] pl-1 pr-1 pb-0.5 pt-0.5 border-amber-300 rounded-[6px] text-[14px] text-amber-300">
         { text }
       </div>
     </>

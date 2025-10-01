@@ -3,6 +3,11 @@ export interface Post {
   href: string,
   date: string,
   order: string,
-  subtopics: string[],
+  subtopics: Heading[],
   contentHTML: string
+}
+
+export interface Heading {
+  id: string,
+  text: string
 }

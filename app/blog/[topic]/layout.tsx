@@ -1,3 +1,4 @@
+import { BlogContextProvider } from "@/context/BlogContext";
 import { Geist, Geist_Mono } from "next/font/google";
 
 const geistSans = Geist({
@@ -14,7 +15,9 @@ export default function RootLayout({ children, } : Readonly<{ children: React.Re
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        {children}
+        <BlogContextProvider>
+          {children}
+        </BlogContextProvider>
       </body>
     </html>
   );
