@@ -1,5 +1,5 @@
-import ProfileContainer from "@/components/ProfileContainer";
-import ContentContainer from "@/components/ContentContainer";
+import ProfileContainer from "@/components/home/ProfileContainer";
+import ContentContainer from "@/components/home/ContentContainer";
 
 function Home() {
   return (

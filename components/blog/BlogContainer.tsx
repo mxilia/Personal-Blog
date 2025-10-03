@@ -2,11 +2,12 @@
 import type { Post } from "@/types/Post";
 import axios from "axios";
 import { useEffect } from "react";
-import TitleList from "./TitleList";
-import LoadingBox from "./LoadingBox";
+import LoadingBox from "../misc/LoadingBox";
 import { useBlogContext } from "@/context/BlogContext";
 import Link from "next/link";
-import NavBar from "./NavBar";
+import useSWR from "swr";
+
+const fetcher = async (url: string) => await axios.get(url).then(r => r.data);
 
 function BlogBlock(){
   const { contentHTML } = useBlogContext()
@@ -22,10 +23,19 @@ function BlogBlock(){
 
 function BlogContainer({ topic, hrefTitle } : { topic : string, hrefTitle : string }){
   const { setTitle, setContentHTML, allPosts, setPosts, idx, setIdx, setTopic } = useBlogContext()
+  const { data } = useSWR("/api/"+topic, fetcher, {
+    revalidateOnFocus: false, 
+    dedupingInterval: 600000,
+  })
   useEffect(() => {
+    if(allPosts.length !== 0) return
+    if(data) setPosts(data)
+  }, [data])
+  useEffect(() => {
+    setTitle(hrefTitle)
     const load = async () => { 
       setContentHTML("Loading")
-      if(allPosts.length !==0){
+      if(allPosts.length !== 0){
         const post : Post | undefined = allPosts.find((e) => e.href === hrefTitle)
         if(post === undefined){
           setContentHTML("")
@@ -51,20 +61,11 @@ function BlogContainer({ topic, hrefTitle } : { topic : string, hrefTitle : stri
     load()
   }, [hrefTitle])
   useEffect(() => {
-    const load = async () => {
-      if(allPosts.length>0) return
-      const result = await axios.get("/api/"+topic)
-      const posts = result.data
-      setPosts(posts)
-      setTopic(topic)
-      setTitle(hrefTitle)
-    }
-    load()
+    setTopic(topic)
+    setTitle(hrefTitle)
   }, [])
   return (
     <>
-      <TitleList/>
-      <NavBar/>
       <div className="flex flex-col items-center mt-5 absolute top-20 left-[50%] translate-x-[-50%] pb-5 border-[1px] rounded-lg border-neutral-700">
         <BlogBlock></BlogBlock>
         <div className="flex w-full mt-5 border-neutral-700 justify-between pl-4 pr-4">

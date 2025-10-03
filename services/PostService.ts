@@ -53,7 +53,8 @@ async function dirToPost(dir : string, config : boolean) : Promise<any> {
     'date' : matterRes.data.date || null, 
     'order' : matterRes.data.order || null, 
     'subtopics' : headings || null, 
-    'contentHTML' : contentHTML || ""
+    'contentHTML' : contentHTML || "",
+    'showSubTopics' : false
   }
 }
 
@@ -85,7 +86,7 @@ class postService {
 
   static async loadAll() : Promise<void> {
     if(postsLoaded) return
-    if (!loadPromise) {
+    if(!loadPromise){
       postsContainer.clear()
       loadPromise = (async () => {
         await walkDir(postsDir);
