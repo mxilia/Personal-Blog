@@ -10,7 +10,10 @@ type BlogContextType = {
   allPosts: Post[],
   setPosts : (val: Post[]) => void,
   idx : number,
-  setIdx : (val: number) => void  
+  setIdx : (val: number) => void
+  curTopic : string,
+  setTopic : (val: string) => void
+  setShowSubTopics : (idx : number, val : boolean) => void
 };
 
 const BlogContext = createContext<BlogContextType | undefined>(undefined);
@@ -20,8 +23,19 @@ export function BlogContextProvider({ children }: { children: ReactNode }){
   const [contentHTML, setContentHTML] = useState<string>("Loading")
   const [allPosts, setPosts] = useState<Post[]>([])
   const [idx, setIdx] = useState<number>(-100)
+  const [curTopic, setTopic] = useState("")
+  const setShowSubTopics = (idx : number, val : boolean) => {
+    setPosts(prev => {
+      if (idx < 0 || idx >= prev.length) return prev;
+      return [
+        ...prev.slice(0, idx),
+        { ...prev[idx], showSubTopics: val },
+        ...prev.slice(idx + 1),
+      ]
+    })
+  }
   return (
-    <BlogContext.Provider value={{ hrefTitle, setTitle, contentHTML, setContentHTML, allPosts, setPosts, idx, setIdx }}>
+    <BlogContext.Provider value={{ hrefTitle, setTitle, contentHTML, setContentHTML, allPosts, setPosts, idx, setIdx, curTopic, setTopic, setShowSubTopics }}>
       {children}
     </BlogContext.Provider>
   );

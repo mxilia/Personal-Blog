@@ -2,14 +2,6 @@
 import TopicText from "./TopicText";
 import ContentList from "./ContentList";
 
-function SearchBar(){
-  return (
-    <>
-      
-    </>
-  )
-}
-
 function ContentContainer(){
   return (
     <div className="w-full h-fit p-5">

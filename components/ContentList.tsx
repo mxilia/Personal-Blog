@@ -5,6 +5,14 @@ import type { TopicMeta } from "@/types/TopicMeta";
 import axios from "axios";
 import LoadingBox from "./LoadingBox";
 
+function SearchBar(){
+  return (
+    <>
+      
+    </>
+  )
+}
+
 function ContentList(){
   const [topics, setTopics] = useState<TopicMeta[]>([])
   useEffect(() => {

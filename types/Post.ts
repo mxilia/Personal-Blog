@@ -4,7 +4,8 @@ export interface Post {
   date: string,
   order: string,
   subtopics: Heading[],
-  contentHTML: string
+  contentHTML: string,
+  showSubTopics: boolean[]
 }
 
 export interface Heading {

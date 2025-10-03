@@ -1,15 +1,15 @@
 'use client'
 import type { Post } from "@/types/Post";
 import axios from "axios";
-import { useContext, useEffect, useState } from "react";
+import { useEffect } from "react";
 import TitleList from "./TitleList";
 import LoadingBox from "./LoadingBox";
-import { createContext } from "vm";
 import { useBlogContext } from "@/context/BlogContext";
+import Link from "next/link";
+import NavBar from "./NavBar";
 
-const BlogContext = createContext()
-
-function BlogBlock({ contentHTML } : { contentHTML : string }){
+function BlogBlock(){
+  const { contentHTML } = useBlogContext()
   return (
     <div className="p-4 w-150 nice-scrollbar">
       {
@@ -20,8 +20,8 @@ function BlogBlock({ contentHTML } : { contentHTML : string }){
   )
 }
 
-function BlogContainer({ topic } : { topic : string }){
-  const { hrefTitle, setTitle, contentHTML, setContentHTML, allPosts, setPosts, idx, setIdx } = useBlogContext()
+function BlogContainer({ topic, hrefTitle } : { topic : string, hrefTitle : string }){
+  const { setTitle, setContentHTML, allPosts, setPosts, idx, setIdx, setTopic } = useBlogContext()
   useEffect(() => {
     const load = async () => { 
       setContentHTML("Loading")
@@ -52,31 +52,39 @@ function BlogContainer({ topic } : { topic : string }){
   }, [hrefTitle])
   useEffect(() => {
     const load = async () => {
+      if(allPosts.length>0) return
       const result = await axios.get("/api/"+topic)
-      const posts = result.data.sort((a : Post, b : Post) => parseInt(a.order, 10) - parseInt(b.order, 10))
+      const posts = result.data
       setPosts(posts)
+      setTopic(topic)
+      setTitle(hrefTitle)
     }
     load()
   }, [])
   return (
     <>
-      <TitleList hrefTitle={hrefTitle} hrefTitleSetter={setTitle} posts={allPosts}></TitleList>
+      <TitleList/>
+      <NavBar/>
       <div className="flex flex-col items-center mt-5 absolute top-20 left-[50%] translate-x-[-50%] pb-5 border-[1px] rounded-lg border-neutral-700">
-        <BlogBlock contentHTML={contentHTML}></BlogBlock>
+        <BlogBlock></BlogBlock>
         <div className="flex w-full mt-5 border-neutral-700 justify-between pl-4 pr-4">
             {
               idx-1>=allPosts.length || idx-1<0 ? <div></div>:
-              <div onClick={() => setTitle(allPosts[idx-1].href)} className="hover:text-amber-300 transition-all duration-300">
-                <div className="text-neutral-400 text-sm">Previous</div>
-                <div>{ allPosts[idx-1].title }</div>
-              </div>
+              <Link href={`/blog/${topic}/${allPosts[idx-1].href}`}>
+                <div  className="hover:text-amber-300 transition-all duration-300">
+                  <div className="text-neutral-400 text-sm">Previous</div>
+                  <div>{ allPosts[idx-1].title }</div>
+                </div>
+              </Link>
             }
             {
               idx+1>=allPosts.length || idx+1<0 ? <></>:
-              <div onClick={() => setTitle(allPosts[idx+1].href)} className="hover:text-amber-300 transition-all duration-300">
-                <div className="text-neutral-400 text-sm">Next</div>
-                <div>{ allPosts[idx+1].title }</div>
-              </div>
+              <Link href={`/blog/${topic}/${allPosts[idx+1].href}`}>
+                <div className="hover:text-amber-300 transition-all duration-300">
+                  <div className="text-neutral-400 text-sm">Next</div>
+                  <div>{ allPosts[idx+1].title }</div>
+                </div>
+              </Link>
             }
         </div>
       </div>
