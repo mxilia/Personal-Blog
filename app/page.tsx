@@ -1,6 +1,5 @@
 import ProfileContainer from "@/components/home/ProfileContainer";
 import ContentContainer from "@/components/home/ContentContainer";
-import apiService from "@/services/ApiService";
 
 function Home() {
   return (

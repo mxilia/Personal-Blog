@@ -11,6 +11,7 @@
   "dependencies": {
     "axios": "^1.12.2",
     "gray-matter": "^4.0.3",
+    "jsonwebtoken": "^9.0.2",
     "next": "15.5.4",
     "prism-themes": "^1.9.0",
     "prismjs": "^1.30.0",
@@ -30,6 +31,7 @@
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
     "@tailwindcss/typography": "^0.5.19",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

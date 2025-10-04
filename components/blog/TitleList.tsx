@@ -30,7 +30,7 @@ function TitleList(){
          )
         }
       </div>
-      <div className={"opacity-80 bg-black w-[100vw] h-[100vh] fixed z-[2] [@media(min-width:1154px)]:hidden "+(close ? "hidden" : "block")}></div>
+      <div className={"opacity-80 bg-black w-[100vw] h-[100vh] fixed z-[2] [@media(min-width:1154px)]:hidden "+(close ? "hidden" : "block")} onClick={()=>{setClose(!close)}}></div>
     </>
   )
 }
