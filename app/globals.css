@@ -95,7 +95,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .prose {
-  @apply text-neutral-100;
+  @apply text-neutral-100 text-[15px]
 }
 
 .prose p {
@@ -103,7 +103,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .prose h1 {
-  @apply text-4xl font-bold
+  @apply text-[30px] font-bold
+}
+
+.prose h2 {
+  @apply text-[21px]
 }
 
 .prose h1,

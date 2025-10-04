@@ -1,5 +1,5 @@
 'use client'
-import TopicText from "../blog/TopicText";
+import TopicText from "../misc/TopicText";
 import ContentList from "./ContentList";
 
 function ContentContainer(){

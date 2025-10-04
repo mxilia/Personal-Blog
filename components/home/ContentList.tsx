@@ -1,9 +1,9 @@
 'use client'
 import ContentBox from "./ContentBox";
 import { useEffect, useRef, useState } from "react";
-import type { TopicMeta } from "@/types/TopicMeta";
-import axios from "axios";
 import LoadingBox from "../misc/LoadingBox";
+import axios from "axios";
+import { TopicMeta } from "@/types/TopicMeta";
 import useSWR from "swr";
 
 function SearchBar({ text, setText } : { text : string, setText : (val: string) => void }){
@@ -22,46 +22,34 @@ function SearchBar({ text, setText } : { text : string, setText : (val: string) 
   )
 }
 
-const fetcher = async (url: string) => await axios.get(url).then(r => r.data);
+const fetcher = async (url: string) => await axios.get(url).then(r => r.data)
 
 function ContentList(){
   const [topics, setTopics] = useState<TopicMeta[]>([])
   const [text, setText] = useState("")
-  const [filteredTopics, setFiltered] = useState<TopicMeta[]>([])
-  const partialStringCount = (a : string, b : string) => {
-    let minLength = Math.min(a.length, b.length), cnt=0
+  const partialString = (a : string, b : string) => {
+    const minLength = Math.min(a.length, b.length)
     for(let i=0;i<minLength;i++){
-      if(a[i]===b[i]) cnt++
-      else break
+      if(a[i]!==b[i]) return false
     }
-    return cnt
+    return true
   }
   const { data } = useSWR("/api/topics_meta", fetcher, {
     revalidateOnFocus: false, 
     dedupingInterval: 600000,
   })
   useEffect(() => {
-    if(data){
-      setTopics(data)
-      setFiltered(data)
-    }
+    if(data) setTopics(data)
   }, [data])
-  useEffect(() => {
-    let maxPartial = 0
-    topics.forEach((e) => {maxPartial = Math.max(maxPartial, partialStringCount(text, e.topic))})
-    const filtered = text === "" ? topics : topics.filter((e) => (partialStringCount(text, e.topic) === maxPartial && maxPartial !== 0))
-    console.log(text, filtered)
-    setFiltered(filtered)
-  }, [text])
-  useEffect(() => {
-    if(data) setFiltered(data)
-  }, [])
   return (
     <> 
       <SearchBar text={text} setText={setText}/>
       {
-        topics.length === 0 ? <LoadingBox/> : 
-        filteredTopics.map((e) => (<ContentBox key={e.topic+"_searched"} date={e.date} href={e.href} topic_text={e.topic} tags={e.tags} desc={e.desc}/>))
+        topics === undefined || topics.length === 0 ? <LoadingBox/> : 
+        topics.map((e) => (
+            text === "" || partialString(e.topic, text) ? <ContentBox key={e.topic} date={e.date} href={e.href} topic_text={e.topic} tags={e.tags} desc={e.desc}/> : null
+          )
+        )
       }
     </>
   )

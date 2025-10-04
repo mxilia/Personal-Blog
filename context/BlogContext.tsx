@@ -43,6 +43,6 @@ export function BlogContextProvider({ children }: { children: ReactNode }){
 
 export function useBlogContext(){
   const context = useContext(BlogContext);
-  if (!context) throw new Error("useContextBlog must be used inside BlogContextProvider.");
+  if (!context) throw new Error("useBlogContext must be used inside BlogContextProvider.");
   return context;
 }

@@ -1,11 +1,12 @@
 import ProfileContainer from "@/components/home/ProfileContainer";
 import ContentContainer from "@/components/home/ContentContainer";
+import apiService from "@/services/ApiService";
 
 function Home() {
   return (
-    <div className="w-170 h-full flex flex-col items-center absolute translate-[-50%] top-[50%] left-[50%]">
+    <div className="w-full h-full flex flex-col items-center absolute translate-[-50%] top-[50%] left-[50%] sm:w-140">
       <ProfileContainer></ProfileContainer>
-      <ContentContainer></ContentContainer>
+      <ContentContainer/>
     </div>
   );
 }
