@@ -115,7 +115,6 @@ h1, h2, h3, h4, h5, h6 {
   @apply text-neutral-50 mb-1 pb-1 border-b-2 border-[#1d1d1e];
 }
 
-
 .prose pre {
   @apply bg-neutral-900;
 }

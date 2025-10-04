@@ -1,10 +1,10 @@
 ---
 topic: "Competitive Programming"
 href : "competitive_programming"
-date: "19/19/19"
+date: "2025-09-27"
 tags:
   - Algorithm
   - Data Structure
   - C++
-desc: "This is where i teach"
+desc: "If you're interested in learning data structures and algorithms, this is for you."
 ---

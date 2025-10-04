@@ -19,14 +19,14 @@ function TitleBox({ classStr, title, subtopics, href, order } : { classStr: stri
   }, [subTopicsRef, hrefTitle])
   return (
     <>
-      <Link href={`/blog/${curTopic}/${href}`}>
-        <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center">
+        <Link href={`/blog/${curTopic}/${href}`}>
           <div className={classStr+" select-none break-words w-50"} onClick={() => {setShowSubTopics(idx, true)}}>{ title }</div>
-            <div onClick={() => {setShowSubTopics(idx, !allPosts[idx].showSubTopics)}} className={classArrowBox}>
-              <div className={classArrow + (allPosts[idx].showSubTopics === true ? " rotate-45" : " rotate-[-45deg]") + (href === hrefTitle ? " border-amber-300" : "")}></div>
-            </div> 
-        </div>
-      </Link>
+        </Link>
+        <div onClick={() => {setShowSubTopics(idx, !allPosts[idx].showSubTopics)}} className={classArrowBox}>
+          <div className={classArrow + (allPosts[idx].showSubTopics === true ? " rotate-45" : " rotate-[-45deg]") + (href === hrefTitle ? " border-amber-300" : "")}></div>
+        </div> 
+      </div>
       <div className="ml-2 overflow-hidden transition-all duration-300" ref={subTopicsRef} style={{ maxHeight: allPosts[idx].showSubTopics === true ? `${height}px` : "0px" }}>
         {
           subtopics.map((e) => (

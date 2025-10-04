@@ -1,10 +1,7 @@
 ---
 title: "Introduction to C++"
 href: "introduction_to_cpp"
-date: "2025-09-08"
-subtopics:
-  - Introduction
-  - Installation
+date: "2025-10-01"
 order: 2
 ---
 # Introduction to C++

@@ -4,5 +4,6 @@ export async function GET(request : Request, { params }: { params: Promise<{ top
   const param = await params
   await postService.loadAll()
   const post = postService.getPostByTitle(param.topic, param.hrefTitle)
-  return Response.json(post)
+  if(!postService.titleExistence(param.topic, param.hrefTitle) || post === null) return Response.json({post: null, error: "Post not found", status: 404})
+  return Response.json({post: post, error: "Post not found", status: 404})
 }
