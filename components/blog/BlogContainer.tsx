@@ -4,10 +4,8 @@ import { useEffect } from "react";
 import LoadingBox from "../misc/LoadingBox";
 import { useBlogContext } from "@/context/BlogContext";
 import Link from "next/link";
-import axios from "axios";
 import useSWR from "swr";
-
-const fetcher = async (url: string) => await axios.get(url).then(r => r.data.posts)
+import { fetcher } from "@/services/Fetcher";
 
 function BlogBlock(){
   const { contentHTML } = useBlogContext()
@@ -23,50 +21,43 @@ function BlogBlock(){
 
 function BlogContainer({ topic, hrefTitle } : { topic : string, hrefTitle : string }){
   const { setTitle, setContentHTML, allPosts, setPosts, idx, setIdx, setTopic } = useBlogContext()
-  const { data } = useSWR("/api/"+topic, fetcher, {
+  const { data: posts, isLoading: postsLoading } = useSWR("/api/"+topic, fetcher, {
+    revalidateOnFocus: false, 
+    dedupingInterval: 600000,
+  })
+  const { data: post, isLoading: postLoading } = useSWR("/api/"+topic+"/"+hrefTitle, fetcher, {
     revalidateOnFocus: false, 
     dedupingInterval: 600000,
   })
   useEffect(() => {
     if(allPosts.length) return
-    if(data) setPosts(data)
-  }, [data])
+    if(posts) setPosts(posts.posts)
+  }, [posts, postsLoading])
   useEffect(() => {
     setTitle(hrefTitle)
-    const load = async () => { 
-      setContentHTML("Loading")
-      if(allPosts.length){
-        const post : Post | undefined = allPosts.find((e) => e.href === hrefTitle)
-        if(post === null || post === undefined){
-          setContentHTML("Not Found")
-          setIdx(-100)
-        }
-        else{
-          setContentHTML(post.contentHTML)
-          setIdx(parseInt(post.order)-1)
-        }
-        return
-      } 
-      try {
-        let post : Post | null = null;
-        const result = await axios.get("/api/"+topic+"/"+hrefTitle)
-        if(result) post = result.data.post
-        if(post === null || post === undefined){
-          setContentHTML("Not Found")
-          setIdx(-100)
-        }
-        else {
-          setContentHTML(post.contentHTML)
-          setIdx(parseInt(post.order)-1)
-        }
-      } catch(error) {
-        console.log("Error fetching for post:", error)
-        setContentHTML("Error")
+    setContentHTML("Loading")
+    if(allPosts.length){
+      const post : Post | undefined = allPosts.find((e) => e.href === hrefTitle)
+      if(post === null || post === undefined){
+        setContentHTML("Not Found")
         setIdx(-100)
       }
+      else {
+        setContentHTML(post.contentHTML)
+        setIdx(parseInt(post.order)-1)
+      }
+      return
     }
-    load()
-  }, [hrefTitle])
+    if(postLoading) return
+    if(post === null || post === undefined){
+      setContentHTML("Not Found")
+      setIdx(-100)
+    }
+    else {
+      setContentHTML(post.post.contentHTML)
+      setIdx(parseInt(post.post.order)-1)
+    }
+  }, [hrefTitle, post])
   useEffect(() => {
     setTopic(topic)
     setTitle(hrefTitle)

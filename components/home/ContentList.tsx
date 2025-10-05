@@ -2,9 +2,9 @@
 import ContentBox from "./ContentBox";
 import { useEffect, useRef, useState } from "react";
 import LoadingBox from "../misc/LoadingBox";
-import axios from "axios";
 import { TopicMeta } from "@/types/TopicMeta";
 import useSWR from "swr";
+import { fetcher } from "@/services/Fetcher";
 
 function SearchBar({ text, setText } : { text : string, setText : (val: string) => void }){
   const barRef = useRef(null)
@@ -21,8 +21,6 @@ function SearchBar({ text, setText } : { text : string, setText : (val: string) 
     </>
   )
 }
-
-const fetcher = async (url: string) => await axios.get(url).then(r => r.data)
 
 function ContentList(){
   const [topics, setTopics] = useState<TopicMeta[]>([])
