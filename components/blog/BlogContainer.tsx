@@ -57,7 +57,7 @@ function BlogContainer({ topic, hrefTitle } : { topic : string, hrefTitle : stri
       setContentHTML(post.post.contentHTML)
       setIdx(parseInt(post.post.order)-1)
     }
-  }, [hrefTitle, post])
+  }, [hrefTitle, postLoading])
   useEffect(() => {
     setTopic(topic)
     setTitle(hrefTitle)
