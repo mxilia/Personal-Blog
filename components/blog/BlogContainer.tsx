@@ -64,7 +64,7 @@ function BlogContainer({ topic, hrefTitle } : { topic : string, hrefTitle : stri
   }, [])
   return (
     <>
-      <div className="flex flex-col items-center transition-background mt-5 pb-4.5 border-[1px] rounded-lg border-[var(--border-block)] w-[calc(100%-26px)] [@media(min-width:590px)]:w-140">
+      <div className="flex flex-col items-center transition-background mt-5 pb-4.5 border-[1px] rounded-lg border-[var(--border-block)] w-[calc(100%-26px)] [@media(min-width:590px)]:w-140 h-fit">
         <BlogBlock/>
         <div className="flex w-full mt-5 border-[var(--border-block)] justify-between pl-4 pr-4">
             {
