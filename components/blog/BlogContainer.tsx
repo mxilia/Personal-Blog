@@ -25,17 +25,12 @@ function BlogContainer({ topic, hrefTitle } : { topic : string, hrefTitle : stri
     revalidateOnFocus: false, 
     dedupingInterval: 600000,
   })
-  const { data: post, isLoading: postLoading } = useSWR("/api/"+topic+"/"+hrefTitle, fetcher, {
-    revalidateOnFocus: false, 
-    dedupingInterval: 600000,
-  })
   useEffect(() => {
     if(allPosts.length) return
     if(posts) setPosts(posts.posts)
   }, [posts, postsLoading])
   useEffect(() => {
     setTitle(hrefTitle)
-    setContentHTML("Loading")
     if(allPosts.length){
       const post : Post | undefined = allPosts.find((e) => e.href === hrefTitle)
       if(post === null || post === undefined){
@@ -48,16 +43,8 @@ function BlogContainer({ topic, hrefTitle } : { topic : string, hrefTitle : stri
       }
       return
     }
-    if(postLoading) return
-    if(post === null || post === undefined){
-      setContentHTML("Not Found")
-      setIdx(-100)
-    }
-    else {
-      setContentHTML(post.post.contentHTML)
-      setIdx(parseInt(post.post.order)-1)
-    }
-  }, [hrefTitle, postLoading])
+    else setContentHTML("Loading")
+  }, [hrefTitle, allPosts])
   useEffect(() => {
     setTopic(topic)
     setTitle(hrefTitle)
