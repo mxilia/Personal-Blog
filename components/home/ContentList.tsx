@@ -12,7 +12,7 @@ function SearchBar({ text, setText } : { text : string, setText : (val: string) 
     <>
       <input 
         ref={barRef} 
-        className="w-full mt-2 mb-2 p-1 pl-2 border-[1px] border-neutral-700 rounded-lg text-neutral-300 focus:outline-none" 
+        className="w-full mt-2 mb-2 p-1 pl-2 border-[1px] border-[var(--border-block)] rounded-lg text-[var(--sub-text1)] focus:outline-none" 
         placeholder="Search?"
         type="text"
         value={text}

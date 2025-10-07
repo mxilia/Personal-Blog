@@ -64,24 +64,24 @@ function BlogContainer({ topic, hrefTitle } : { topic : string, hrefTitle : stri
   }, [])
   return (
     <>
-      <div className="flex flex-col items-center mt-5 absolute top-20 left-[50%] translate-x-[-50%] pb-4.5 border-[1px] rounded-lg border-neutral-700 w-[calc(100%-26px)] [@media(min-width:590px)]:w-140">
+      <div className="flex flex-col items-center mt-5 absolute top-20 left-[50%] translate-x-[-50%] pb-4.5 border-[1px] rounded-lg border-[var(--border-block)] w-[calc(100%-26px)] [@media(min-width:590px)]:w-140">
         <BlogBlock/>
-        <div className="flex w-full mt-5 border-neutral-700 justify-between pl-4 pr-4">
+        <div className="flex w-full mt-5 border-[var(--border-block)] justify-between pl-4 pr-4">
             {
               idx-1>=allPosts.length || idx-1<0 || !allPosts.length ? <div></div>:
               <Link href={`/blog/${topic}/${allPosts[idx-1].href}`} prefetch>
-                <div  className="hover:text-amber-300 transition-all duration-300">
-                  <div className="text-neutral-400 text-[13px]">Previous</div>
-                  <div className="text-[15px]">{ allPosts[idx-1].title }</div>
+                <div  className="hover:text-[var(--yellow)] transition-all duration-300">
+                  <div className="text-[var(--sub-text2)] text-[13px]">Previous</div>
+                  <div className="text-[15px] text-[var(--text)]">{ allPosts[idx-1].title }</div>
                 </div>
               </Link>
             }
             {
               idx+1>=allPosts.length || idx+1<0 || !allPosts.length ? <></>:
               <Link href={`/blog/${topic}/${allPosts[idx+1].href}`} prefetch>
-                <div className="hover:text-amber-300 transition-all duration-300">
-                  <div className="text-neutral-400 text-[13px]">Next</div>
-                  <div className="text-[15px]">{ allPosts[idx+1].title }</div>
+                <div className="hover:text-[var(--yellow)] transition-all duration-300">
+                  <div className="text-[var(--sub-text2)] text-[13px]">Next</div>
+                  <div className="text-[15px] text-[var(--text)]">{ allPosts[idx+1].title }</div>
                 </div>
               </Link>
             }

@@ -2,7 +2,7 @@
 
 function LoadingBox() {
   return (
-    <div>
+    <div className="text-[var(--text)]">
       <span className="text-animate">L</span>
       <span className="text-animate">o</span>
       <span className="text-animate">a</span>

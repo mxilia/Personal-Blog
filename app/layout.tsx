@@ -3,7 +3,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import postService from "@/services/PostService";
 import { BlogContextProvider } from "@/context/BlogContext";
-
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],

@@ -24,7 +24,7 @@ function TitleBox({ classStr, title, subtopics, href, order } : { classStr: stri
           <div className={classStr+" select-none break-words w-45"} onClick={() => {setShowSubTopics(idx, true)}}>{ title }</div>
         </Link>
         <div onClick={() => {setShowSubTopics(idx, !allPosts[idx].showSubTopics)}} className={classArrowBox}>
-          <div className={classArrow + (allPosts[idx].showSubTopics === true ? " rotate-45" : " rotate-[-45deg]") + (href === hrefTitle ? " border-amber-300" : "")}></div>
+          <div className={classArrow + (allPosts[idx].showSubTopics === true ? " rotate-45" : " rotate-[-45deg]") + (href === hrefTitle ? " border-[var(--yellow)]" : "")}></div>
         </div> 
       </div>
       <div className="ml-2 overflow-hidden transition-all duration-300" ref={subTopicsRef} style={{ maxHeight: allPosts[idx].showSubTopics === true ? `${height}px` : "0px" }}>
@@ -32,7 +32,7 @@ function TitleBox({ classStr, title, subtopics, href, order } : { classStr: stri
           subtopics.length === 0 ? null
           : subtopics.map((e) => (
             <Link href={`/blog/${curTopic}/${href}#${e.id}`} key={e.id}>
-              <div className="select-none border-l-[1px] border-neutral-700 text-[15px] pl-2.5 transition-all duration-200 origin-left hover:text-neutral-50 text-neutral-300 p-[5px]">{ e.text }</div>
+              <div className="select-none border-l-[1px] border-[var(--border-block)] text-[15px] pl-2.5 transition-all duration-200 origin-left hover:text-[var(--hover-text)] text-[var(--subtext-1)] p-[5px]">{ e.text }</div>
             </Link>
             )
           )
