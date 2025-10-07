@@ -69,7 +69,7 @@ function BlogContainer({ topic, hrefTitle } : { topic : string, hrefTitle : stri
         <div className="flex w-full mt-5 border-neutral-700 justify-between pl-4 pr-4">
             {
               idx-1>=allPosts.length || idx-1<0 || !allPosts.length ? <div></div>:
-              <Link href={`/blog/${topic}/${allPosts[idx-1].href}`}>
+              <Link href={`/blog/${topic}/${allPosts[idx-1].href}`} prefetch>
                 <div  className="hover:text-amber-300 transition-all duration-300">
                   <div className="text-neutral-400 text-[13px]">Previous</div>
                   <div className="text-[15px]">{ allPosts[idx-1].title }</div>
@@ -78,7 +78,7 @@ function BlogContainer({ topic, hrefTitle } : { topic : string, hrefTitle : stri
             }
             {
               idx+1>=allPosts.length || idx+1<0 || !allPosts.length ? <></>:
-              <Link href={`/blog/${topic}/${allPosts[idx+1].href}`}>
+              <Link href={`/blog/${topic}/${allPosts[idx+1].href}`} prefetch>
                 <div className="hover:text-amber-300 transition-all duration-300">
                   <div className="text-neutral-400 text-[13px]">Next</div>
                   <div className="text-[15px]">{ allPosts[idx+1].title }</div>
