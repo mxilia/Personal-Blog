@@ -11,7 +11,7 @@ function NavBar(){
         <Image alt="img not available" width={32} height={32} className="rounded-[50px] object-cover" src="/kuromi.jpg"/>
         <div className="font-serif font-medium text-lg hover-bigger text-[var(--text)]"> mxilia </div>
       </Link>
-      <div className="flex gap-15 [@media(max-width:676px)]:gap-10"> 
+      <div className="flex gap-15 [@media(max-width:676px)]:gap-5"> 
         <ThemeToggle/>
         <Link href="/" prefetch><div className="hover-bigger text-[15px] text-[var(--text)]"> Home </div></Link>
         <a href="https://github.com/mxilia" target="_blank"><div className="hover-bigger text-[var(--text)] text-[15px]"> Github </div> </a>
