@@ -13,7 +13,7 @@ function BlogBlock(){
     <div className="p-[14px] w-full nice-scrollbar">
       {
         contentHTML === "Loading" ? 
-        <LoadingBox/> : <div className="prose prose-slate dark:prose-invert" dangerouslySetInnerHTML={{ __html: contentHTML }}></div> 
+        <LoadingBox/> : <div className="prose prose-slate dark:prose-invert transition-background" dangerouslySetInnerHTML={{ __html: contentHTML }}></div> 
       }
     </div>
   )
@@ -64,7 +64,7 @@ function BlogContainer({ topic, hrefTitle } : { topic : string, hrefTitle : stri
   }, [])
   return (
     <>
-      <div className="flex flex-col items-center mt-5 absolute top-20 left-[50%] translate-x-[-50%] pb-4.5 border-[1px] rounded-lg border-[var(--border-block)] w-[calc(100%-26px)] [@media(min-width:590px)]:w-140">
+      <div className="flex flex-col items-center transition-background mt-5 absolute top-20 left-[50%] translate-x-[-50%] pb-4.5 border-[1px] rounded-lg border-[var(--border-block)] w-[calc(100%-26px)] [@media(min-width:590px)]:w-140">
         <BlogBlock/>
         <div className="flex w-full mt-5 border-[var(--border-block)] justify-between pl-4 pr-4">
             {

@@ -11,10 +11,6 @@
   }
 }
 
-* {
-  transition: all 200ms ease-in-out
-}
-
 :root {
   --background: #090909; /*neutral-900*/
   --border-blockquote: #d1d5dc; /*gray-300*/
@@ -90,6 +86,10 @@
 
 .nice-scrollbar::-webkit-scrollbar-corner {
   background: var(--scroll-track);
+}
+
+.transition-background {
+  @apply transition-colors duration-300
 }
 
 @theme inline {
