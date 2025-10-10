@@ -24,6 +24,7 @@
   --sub-text2: #a1a1a1; /*neutral-400*/
   --yellow: #ffd230; /*amber-300*/
   --pre-bg: #171717; /*neutral-900*/
+  --nav-bg: #090909a5;
 
   --scroll-track: #0f0f10;      
   --scroll-thumb: #2f2f33;      
@@ -47,6 +48,7 @@
   --sub-text2: #424242;
   --yellow: #ddb00e;
   --pre-bg: #3b3b3b;
+  --nav-bg: #ffffff83;
 }
 
 .nice-scrollbar {
