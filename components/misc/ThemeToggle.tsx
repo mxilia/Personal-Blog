@@ -12,8 +12,8 @@ export default function ThemeToggle() {
     >
     {
       theme !== 'light' ? 
-      <Image alt="img not available" width={20} height={20} className="invert-100" src="/sun_icon.png"/> : 
-      <Image alt="img not available" width={20} height={20} src="/moon_icon.png"/>
+      <Image alt="img not available" width={18} height={18} className="invert-100" src="/sun_icon.png"/> : 
+      <Image alt="img not available" width={18} height={18} src="/moon_icon.png"/>
     }
     </button>
   )
