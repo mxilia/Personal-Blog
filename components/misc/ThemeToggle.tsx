@@ -1,10 +1,10 @@
 'use client';
 
-import { useBlogContext } from '@/context/BlogContext';
+import { useWebContext } from '@/context/WebContext';
 import Image from "next/image";
 
 export default function ThemeToggle() {
-  const { theme, setTheme } = useBlogContext()
+  const { theme, setTheme } = useWebContext()
   return (
     <button
       onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}

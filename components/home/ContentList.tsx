@@ -2,9 +2,8 @@
 import ContentBox from "./ContentBox";
 import { useEffect, useRef, useState } from "react";
 import LoadingBox from "../misc/LoadingBox";
-import { TopicMeta } from "@/types/TopicMeta";
 import { fetcher } from "@/services/Fetcher";
-import { useBlogContext } from "@/context/BlogContext";
+import { useWebContext } from "@/context/WebContext";
 
 function SearchBar({ text, setText } : { text : string, setText : (val: string) => void }){
   const barRef = useRef(null)
@@ -23,7 +22,7 @@ function SearchBar({ text, setText } : { text : string, setText : (val: string) 
 }
 
 function ContentList(){
-  const { topics, setTopics } =  useBlogContext()
+  const { topics, setTopics } = useWebContext()
   const [text, setText] = useState("")
   const partialString = (a : string, b : string) => {
     const minLength = Math.min(a.length, b.length)

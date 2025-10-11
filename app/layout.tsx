@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import postService from "@/services/PostService";
-import { BlogContextProvider } from "@/context/BlogContext";
+import { WebContextProvider } from "@/context/WebContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,9 +31,9 @@ export default function RootLayout({ children, } : Readonly<{ children: React.Re
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>  
-        <BlogContextProvider>
+        <WebContextProvider>
           {children}
-        </BlogContextProvider>
+        </WebContextProvider>
       </body>
     </html>
   );

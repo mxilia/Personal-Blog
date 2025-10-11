@@ -15,8 +15,11 @@ function TitleBox({ classStr, title, subtopics, href, order } : { classStr: stri
   const [height, setHeight] = useState(0)
   useEffect(() => {
     if(subTopicsRef.current !== null) setHeight(subTopicsRef.current.scrollHeight)
+  }, [subTopicsRef])
+  useEffect(() => {
+    if(allPosts[idx].showSubTopics === true) return
     if(href === hrefTitle) setShowSubTopics(idx, true)
-  }, [subTopicsRef, hrefTitle])
+  }, [hrefTitle, allPosts])
   return (
     <>
       <div className="flex justify-between items-center">

@@ -147,7 +147,6 @@ class postService {
     if(postsLoaded) return postsContainer.get(topic)
 		try {
 			const cDir = path.join(postsDir, topic)
-      console.log(cDir)
 			const children =  await fs.promises.readdir(cDir)
 			const posts : Post[] = []
 			for(const file of children){
@@ -176,14 +175,14 @@ class postService {
 			const children =  await fs.promises.readdir(cDir)
 			for(const file of children){
 				const fileDir = path.join(cDir, file)
-				if(file.endsWith('md') && file === hrefTitle){
+				if(file.endsWith('md') && file === hrefTitle+".md"){
 					const post : Post = await dirToPost(fileDir, false)
 					return post
 				}
 			}
 			return null
 		} catch(err) {
-			console.log("getPostsByTopic file error:", err)
+			console.log("getPostsByTitle file error:", err)
 			return null
 		}
   }

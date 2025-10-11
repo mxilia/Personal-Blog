@@ -14,11 +14,7 @@ type BlogContextType = {
   setIdx : (val: number) => void
   curTopic : string,
   setTopic : (val: string) => void
-  theme: string,
-  setTheme: (val: 'light' | 'dark') => void,
   setShowSubTopics : (idx : number, val : boolean) => void
-  topics: TopicMeta[],
-  setTopics: (val: TopicMeta[]) => void
 };
 
 const BlogContext = createContext<BlogContextType | undefined>(undefined);
@@ -29,34 +25,18 @@ export function BlogContextProvider({ children }: { children: ReactNode }){
   const [allPosts, setPosts] = useState<Post[]>([])
   const [idx, setIdx] = useState<number>(-100)
   const [curTopic, setTopic] = useState("")
-  const [theme, setTheme] = useState<'light'|'dark'>('dark')
-  const initialized = useRef(false)
-  const [topics, setTopics] = useState<TopicMeta[]>([])
   const setShowSubTopics = (idx : number, val : boolean) => {
     setPosts(prev => {
-      if (idx < 0 || idx >= prev.length) return prev;
+      if(idx<0 || idx>=prev.length) return prev
       return [
         ...prev.slice(0, idx),
         { ...prev[idx], showSubTopics: val },
-        ...prev.slice(idx + 1),
+        ...prev.slice(idx+1),
       ]
     })
   }
-  useEffect(() => {
-    if(!initialized.current) return
-    document.documentElement.setAttribute('data-theme', theme)
-    sessionStorage.setItem('data-theme', theme)
-  }, [theme])
-  useEffect(() => {
-    if(typeof window !== 'undefined'){
-      const theme = sessionStorage.getItem('data-theme') ?? 'dark'
-      if(theme !== 'dark' && theme !== 'light') setTheme('dark')
-      else setTheme(theme)
-    }
-    initialized.current = true
-  }, [])
   return (
-    <BlogContext.Provider value={{ hrefTitle, setTitle, contentHTML, setContentHTML, allPosts, setPosts, idx, setIdx, curTopic, setTopic, theme, setTheme, setShowSubTopics, topics, setTopics }}>
+    <BlogContext.Provider value={{ hrefTitle, setTitle, contentHTML, setContentHTML, allPosts, setPosts, idx, setIdx, curTopic, setTopic, setShowSubTopics }}>
       {children}
     </BlogContext.Provider>
   );

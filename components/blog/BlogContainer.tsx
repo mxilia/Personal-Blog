@@ -11,7 +11,7 @@ function BlogBlock({ topic } : { topic : string }){
   return (
     <div className="p-[14px] w-full nice-scrollbar">
       {
-        !allPosts ? <>Not Found</> : contentHTML === "Loading" || topic !== curTopic ? 
+        contentHTML === "Loading" || topic !== curTopic ? 
         <LoadingBox/> : <div className="prose prose-slate dark:prose-invert transition-background" dangerouslySetInnerHTML={{ __html: contentHTML }}></div> 
       }
     </div>
@@ -20,6 +20,16 @@ function BlogBlock({ topic } : { topic : string }){
 
 function BlogContainer({ topic, href } : { topic : string, href : string }){
   const { setTitle, setContentHTML, allPosts, setPosts, idx, setIdx, curTopic, setTopic } = useBlogContext()
+  useEffect(() => {
+    if(allPosts && allPosts.length && topic === curTopic) return
+    setTopic(topic)
+    const load = async () => {
+      const data = await fetcher("/api/"+topic)
+      if(data) setPosts(data.posts)
+    }
+    setContentHTML("Loading")
+    load()
+  }, [topic])
   useEffect(() => {
     setTitle(href)
     setContentHTML("Loading")
@@ -37,24 +47,10 @@ function BlogContainer({ topic, href } : { topic : string, href : string }){
     }
     const load = async () => {
       const data = await fetcher("/api/"+topic+"/"+href)
-      console.log("fetch", topic, href, data)
       if(data) setContentHTML(data?.post?.contentHTML ?? data.error)
     }
     load()
-  }, [href])
-  useEffect(() => {
-    if(allPosts && allPosts.length && topic === curTopic) return
-    setPosts([])
-    setContentHTML("Loading")
-    const load = async () => {
-      const data = await fetcher("/api/"+topic)
-      console.log(data)
-      if(data) setPosts(data.posts)
-      setTopic(topic)
-    }
-    setContentHTML("Loading")
-    load()
-  }, [topic])
+  }, [href, allPosts])
   return (
     <>
       <div className="flex flex-col items-center transition-background mt-5 pb-4.5 border-[1px] rounded-lg border-[var(--border-block)] w-[calc(100%-26px)] [@media(min-width:590px)]:w-140 h-fit">
