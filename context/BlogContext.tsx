@@ -1,5 +1,6 @@
 'use client'
 import { type Post } from "@/types/Post"
+import { TopicMeta } from "@/types/TopicMeta";
 import { createContext, useContext, useState, ReactNode, useEffect, useRef } from "react";
 
 type BlogContextType = {
@@ -16,6 +17,8 @@ type BlogContextType = {
   theme: string,
   setTheme: (val: 'light' | 'dark') => void,
   setShowSubTopics : (idx : number, val : boolean) => void
+  topics: TopicMeta[],
+  setTopics: (val: TopicMeta[]) => void
 };
 
 const BlogContext = createContext<BlogContextType | undefined>(undefined);
@@ -28,6 +31,7 @@ export function BlogContextProvider({ children }: { children: ReactNode }){
   const [curTopic, setTopic] = useState("")
   const [theme, setTheme] = useState<'light'|'dark'>('dark')
   const initialized = useRef(false)
+  const [topics, setTopics] = useState<TopicMeta[]>([])
   const setShowSubTopics = (idx : number, val : boolean) => {
     setPosts(prev => {
       if (idx < 0 || idx >= prev.length) return prev;
@@ -52,7 +56,7 @@ export function BlogContextProvider({ children }: { children: ReactNode }){
     initialized.current = true
   }, [])
   return (
-    <BlogContext.Provider value={{ hrefTitle, setTitle, contentHTML, setContentHTML, allPosts, setPosts, idx, setIdx, curTopic, setTopic, theme, setTheme, setShowSubTopics }}>
+    <BlogContext.Provider value={{ hrefTitle, setTitle, contentHTML, setContentHTML, allPosts, setPosts, idx, setIdx, curTopic, setTopic, theme, setTheme, setShowSubTopics, topics, setTopics }}>
       {children}
     </BlogContext.Provider>
   );

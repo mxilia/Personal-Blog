@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import LoadingBox from "../misc/LoadingBox";
 import { TopicMeta } from "@/types/TopicMeta";
 import { fetcher } from "@/services/Fetcher";
+import { useBlogContext } from "@/context/BlogContext";
 
 function SearchBar({ text, setText } : { text : string, setText : (val: string) => void }){
   const barRef = useRef(null)
@@ -22,7 +23,7 @@ function SearchBar({ text, setText } : { text : string, setText : (val: string) 
 }
 
 function ContentList(){
-  const [topics, setTopics] = useState<TopicMeta[]>([])
+  const { topics, setTopics } =  useBlogContext()
   const [text, setText] = useState("")
   const partialString = (a : string, b : string) => {
     const minLength = Math.min(a.length, b.length)
@@ -35,10 +36,7 @@ function ContentList(){
     if(topics.length) return
     const load = async () => {
       const data = await fetcher("/api/topics_meta")
-      console.log(data)
-      if(data){
-        setTopics(data)
-      }
+      if(data) setTopics(data)
     }
     load()
   }, [])

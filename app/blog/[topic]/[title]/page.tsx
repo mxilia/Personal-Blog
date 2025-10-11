@@ -6,7 +6,7 @@ async function PostPage({ params } : { params: Promise<{ topic: string; title: s
     <div className="pt-20 pb-5 flex bg-[var(--background)] min-h-screen transition-background justify-center">
       <BlogContainer 
         topic={param.topic} 
-        hrefTitle={param.title}
+        href={param.title}
       />
     </div>
   )

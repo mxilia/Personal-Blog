@@ -17,7 +17,7 @@ function TitleList(){
       </div>
       <div className={"text-[var(--text)] transition-all duration-300 [@media(min-width:1155px)]:translate-x-[0px] fixed h-screen border-r-[1px] z-5 border-[var(--border-block)] top-[65px] w-72 p-9 bg-[var(--background)] "+(close ? "translate-x-[-288px]" : "")}>
         {
-         allPosts.length === 0 ? <LoadingBox></LoadingBox> :
+         !allPosts || allPosts.length === 0 ? <LoadingBox></LoadingBox> :
          allPosts.map((e) => (
             <TitleBox key={e.order} classStr={"transition-all duration-200 origin-left text-[15px]" + (e.href === hrefTitle ? " scale-110 font-bold text-[var(--yellow)]" : " font-normal hover:text-[var(--hover-text)] hover:scale-110") } 
               clickHandler={() => {setTitle(e.href)}} 

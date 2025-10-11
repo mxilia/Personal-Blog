@@ -14,7 +14,7 @@ export async function getToken(): Promise<string> {
     if(!res.ok) throw new Error("Failed to fetch token")
     const { token } = await res.json()
     cachedToken = token
-    tokenExpiry = now+9.6*60*1000
+    tokenExpiry = now+2.9*60*1000
     return token
   } catch (err) {
     console.error("getToken error:", err)

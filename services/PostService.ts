@@ -147,6 +147,7 @@ class postService {
     if(postsLoaded) return postsContainer.get(topic)
 		try {
 			const cDir = path.join(postsDir, topic)
+      console.log(cDir)
 			const children =  await fs.promises.readdir(cDir)
 			const posts : Post[] = []
 			for(const file of children){
@@ -188,10 +189,10 @@ class postService {
   }
   
   static async getAllTopicMeta() : Promise<TopicMeta[]> {
-    //if(postsLoaded) return [...topicsContainer]
+    if(postsLoaded) return [...topicsContainer]
 		try {
 			const children =  await fs.promises.readdir(postsDir)
-			const tempMeta : TopicMeta[] = [{topic: "YO", href: 'yo', tags:['a'], date:'2020-01-01', desc:'d'}]
+			const tempMeta : TopicMeta[] = []
 			for(const file of children){
 				const fileDir = path.join(postsDir, file)
 				const stat = await fs.promises.stat(fileDir)

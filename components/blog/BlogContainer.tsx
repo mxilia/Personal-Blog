@@ -6,26 +6,26 @@ import { useBlogContext } from "@/context/BlogContext";
 import Link from "next/link";
 import { fetcher } from "@/services/Fetcher";
 
-function BlogBlock(){
-  const { contentHTML } = useBlogContext()
+function BlogBlock({ topic } : { topic : string }){
+  const { contentHTML, allPosts, curTopic } = useBlogContext()
   return (
     <div className="p-[14px] w-full nice-scrollbar">
       {
-        contentHTML === "Loading" ? 
+        !allPosts ? <>Not Found</> : contentHTML === "Loading" || topic !== curTopic ? 
         <LoadingBox/> : <div className="prose prose-slate dark:prose-invert transition-background" dangerouslySetInnerHTML={{ __html: contentHTML }}></div> 
       }
     </div>
   )
 }
 
-function BlogContainer({ topic, hrefTitle } : { topic : string, hrefTitle : string }){
-  const { setTitle, setContentHTML, allPosts, setPosts, idx, setIdx, setTopic } = useBlogContext()
+function BlogContainer({ topic, href } : { topic : string, href : string }){
+  const { setTitle, setContentHTML, allPosts, setPosts, idx, setIdx, curTopic, setTopic } = useBlogContext()
   useEffect(() => {
-    setTitle(hrefTitle)
+    setTitle(href)
     setContentHTML("Loading")
-    if(allPosts.length){
-      const post : Post | undefined = allPosts.find((e) => e.href === hrefTitle)
-      if(post === null || post === undefined){
+    if(allPosts && allPosts.length){
+      const post : Post | undefined = allPosts.find((e) => e.href === href)
+      if(!post){
         setContentHTML("Not Found")
         setIdx(-100)
       }
@@ -36,29 +36,32 @@ function BlogContainer({ topic, hrefTitle } : { topic : string, hrefTitle : stri
       return
     }
     const load = async () => {
-      const data = await fetcher("/api/"+topic+"/"+hrefTitle)
-      if(data) setContentHTML(data.post)
+      const data = await fetcher("/api/"+topic+"/"+href)
+      console.log("fetch", topic, href, data)
+      if(data) setContentHTML(data?.post?.contentHTML ?? data.error)
     }
     load()
-  }, [hrefTitle, allPosts])
+  }, [href])
   useEffect(() => {
-    setTopic(topic)
-    setTitle(hrefTitle)
+    if(allPosts && allPosts.length && topic === curTopic) return
+    setPosts([])
+    setContentHTML("Loading")
     const load = async () => {
       const data = await fetcher("/api/"+topic)
+      console.log(data)
       if(data) setPosts(data.posts)
+      setTopic(topic)
     }
-    if(allPosts.length) return
     setContentHTML("Loading")
     load()
-  }, [])
+  }, [topic])
   return (
     <>
       <div className="flex flex-col items-center transition-background mt-5 pb-4.5 border-[1px] rounded-lg border-[var(--border-block)] w-[calc(100%-26px)] [@media(min-width:590px)]:w-140 h-fit">
-        <BlogBlock/>
+        <BlogBlock topic={topic}/>
         <div className="flex w-full mt-5 border-[var(--border-block)] justify-between pl-4 pr-4">
             {
-              idx-1>=allPosts.length || idx-1<0 || !allPosts.length ? <div></div>:
+              !allPosts || idx-1>=allPosts.length || idx-1<0 ? <div></div>:
               <Link href={`/blog/${topic}/${allPosts[idx-1].href}`} prefetch>
                 <div  className="hover:text-[var(--yellow)] transition-all duration-300">
                   <div className="text-[var(--sub-text2)] text-[13px]">Previous</div>
@@ -67,7 +70,7 @@ function BlogContainer({ topic, hrefTitle } : { topic : string, hrefTitle : stri
               </Link>
             }
             {
-              idx+1>=allPosts.length || idx+1<0 || !allPosts.length ? <></>:
+              !allPosts || idx+1>=allPosts.length || idx+1<0 ? <></>:
               <Link href={`/blog/${topic}/${allPosts[idx+1].href}`} prefetch>
                 <div className="hover:text-[var(--yellow)] transition-all duration-300">
                   <div className="text-[var(--sub-text2)] text-[13px]">Next</div>
