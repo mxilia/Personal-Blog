@@ -96,36 +96,116 @@ class postService {
     return loadPromise;
   }
 
-  static getAllPosts() : Map<string, Post[]> {
+  static async getAllPosts() : Promise<Map<string, Post[]>> {
+    await this.loadAll()
     return postsContainer
   }
 
-  static topicExistence(topic : string) : boolean {
-    return postsContainer.has(topic)
+  static async topicExistence(topic : string) : Promise<boolean> {
+    if(postsLoaded) return postsContainer.has(topic)
+		try {
+			const children =  await fs.promises.readdir(postsDir)
+			for(const file of children){
+				const fileDir = path.join(postsDir, file)
+				const stat = await fs.promises.stat(fileDir)
+				if(stat.isDirectory() && file === topic) return true
+			}
+			return false
+		} catch(err) {
+			console.log("topicExistence file error:", err)
+			return false
+		}
   }
 
-  static titleExistence(topic : string, hrefTitle : string) : boolean {
-    if(!this.topicExistence(topic)) return false
-    const posts = postsContainer.get(topic)
-    if(posts === undefined || posts.length === 0) return false
-    const post = posts.find(post => post.href === hrefTitle)
-    return post !== undefined
+  static async titleExistence(topic : string, hrefTitle : string) : Promise<boolean> {
+		if(!this.topicExistence(topic)) return false
+    if(postsLoaded){
+			const posts = postsContainer.get(topic)
+			if(posts === undefined || posts.length === 0) return false
+			const post = posts.find(post => post.href === hrefTitle)
+			return post !== undefined
+		}
+		try {
+			const cDir = path.join(postsDir, topic)
+			const children =  await fs.promises.readdir(cDir)
+			for(const file of children){
+				const fileDir = path.join(cDir, file)
+				if(file.endsWith('md') && file !== "_config.md"){
+					const post : Post = await dirToPost(fileDir, false)
+					if(post.href === hrefTitle) return true
+				}
+			}
+			return false
+		} catch(err) {
+			console.log("titleExistence file error:", err)
+			return false
+		}
   }
 
-  static getPostsByTopic(topic : string) : Post[] | undefined {
-    if(!this.topicExistence(topic)) return []
-    return postsContainer.get(topic)
+  static async getPostsByTopic(topic : string) : Promise<Post[] | undefined> {
+		if(!this.topicExistence(topic)) return []
+    if(postsLoaded) return postsContainer.get(topic)
+		try {
+			const cDir = path.join(postsDir, topic)
+			const children =  await fs.promises.readdir(cDir)
+			const posts : Post[] = []
+			for(const file of children){
+				const fileDir = path.join(cDir, file)
+				if(file.endsWith('md') && file !== "_config.md"){
+					const post : Post = await dirToPost(fileDir, false)
+					posts.push(post)
+				}
+			}
+			return posts
+		} catch(err) {
+			console.log("getPostsByTopic file error:", err)
+			return []
+		}
   }
 
-  static getPostByTitle(topic : string, hrefTitle : string) : Post | null {
+  static async getPostByTitle(topic : string, hrefTitle : string) : Promise<Post | null> {
     if(!this.titleExistence(topic, hrefTitle)) return null
-    const posts = postsContainer.get(topic)
-    const post = posts!.find(post => post.href === hrefTitle)
-    return post!
+		if(postsLoaded){
+			const posts = postsContainer.get(topic)
+			const post = posts!.find(post => post.href === hrefTitle)
+			return post!
+		}
+    try {
+			const cDir = path.join(postsDir, topic)
+			const children =  await fs.promises.readdir(cDir)
+			for(const file of children){
+				const fileDir = path.join(cDir, file)
+				if(file.endsWith('md') && file === hrefTitle){
+					const post : Post = await dirToPost(fileDir, false)
+					return post
+				}
+			}
+			return null
+		} catch(err) {
+			console.log("getPostsByTopic file error:", err)
+			return null
+		}
   }
   
-  static getAllTopicMeta() : TopicMeta[] | undefined {
-    return [...topicsContainer]
+  static async getAllTopicMeta() : Promise<TopicMeta[]> {
+    if(postsLoaded) return [...topicsContainer]
+		try {
+			const children =  await fs.promises.readdir(postsDir)
+			const tempMeta : TopicMeta[] = []
+			for(const file of children){
+				const fileDir = path.join(postsDir, file)
+				const stat = await fs.promises.stat(fileDir)
+				tempMeta.push({topic: "YO", href: 'yo', tags:['a'], date:'22-22-22', desc:'d'})
+				if(!stat.isDirectory()) continue
+				const configDir = path.join(fileDir, "_config.md")
+				const topicMeta : TopicMeta = await dirToPost(configDir, true)
+				if(topicMeta) tempMeta.push(topicMeta)
+			}
+			return tempMeta
+		} catch(err) {
+			console.log("getAllTopicMeta file error:", err)
+			return [{topic: "errors", href: 'yo', tags:['a'], date:'22-22-22', desc:'d'}]
+		}
   }
 
 }

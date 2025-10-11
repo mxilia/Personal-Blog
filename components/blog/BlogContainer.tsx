@@ -4,7 +4,6 @@ import { useEffect } from "react";
 import LoadingBox from "../misc/LoadingBox";
 import { useBlogContext } from "@/context/BlogContext";
 import Link from "next/link";
-import useSWR from "swr";
 import { fetcher } from "@/services/Fetcher";
 
 function BlogBlock(){
@@ -21,16 +20,9 @@ function BlogBlock(){
 
 function BlogContainer({ topic, hrefTitle } : { topic : string, hrefTitle : string }){
   const { setTitle, setContentHTML, allPosts, setPosts, idx, setIdx, setTopic } = useBlogContext()
-  const { data: posts, isLoading: postsLoading } = useSWR("/api/"+topic, fetcher, {
-    revalidateOnFocus: false, 
-    dedupingInterval: 600000,
-  })
-  useEffect(() => {
-    if(allPosts.length) return
-    if(posts) setPosts(posts.posts)
-  }, [posts, postsLoading])
   useEffect(() => {
     setTitle(hrefTitle)
+    setContentHTML("Loading")
     if(allPosts.length){
       const post : Post | undefined = allPosts.find((e) => e.href === hrefTitle)
       if(post === null || post === undefined){
@@ -43,11 +35,22 @@ function BlogContainer({ topic, hrefTitle } : { topic : string, hrefTitle : stri
       }
       return
     }
-    else setContentHTML("Loading")
+    const load = async () => {
+      const data = await fetcher("/api/"+topic+"/"+hrefTitle)
+      if(data) setContentHTML(data.post)
+    }
+    load()
   }, [hrefTitle, allPosts])
   useEffect(() => {
     setTopic(topic)
     setTitle(hrefTitle)
+    const load = async () => {
+      const data = await fetcher("/api/"+topic)
+      if(data) setPosts(data.posts)
+    }
+    if(allPosts.length) return
+    setContentHTML("Loading")
+    load()
   }, [])
   return (
     <>

@@ -6,6 +6,7 @@ export const fetcher = async (url: string) => {
     headers: {
       Authorization: `Bearer ${token}`,
     },
+    cache: 'force-cache',
   })
   if(!res.ok) throw new Error("Fetch error")
   return res.json()

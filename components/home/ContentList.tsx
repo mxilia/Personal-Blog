@@ -3,7 +3,6 @@ import ContentBox from "./ContentBox";
 import { useEffect, useRef, useState } from "react";
 import LoadingBox from "../misc/LoadingBox";
 import { TopicMeta } from "@/types/TopicMeta";
-import useSWR from "swr";
 import { fetcher } from "@/services/Fetcher";
 
 function SearchBar({ text, setText } : { text : string, setText : (val: string) => void }){
@@ -32,13 +31,15 @@ function ContentList(){
     }
     return true
   }
-  const { data } = useSWR("/api/topics_meta", fetcher, {
-    revalidateOnFocus: false, 
-    dedupingInterval: 600000,
-  })
   useEffect(() => {
-    if(data) setTopics(data)
-  }, [data])
+    if(topics.length) return
+    const load = async () => {
+      const data = await fetcher("/api/topics_meta")
+      console.log(data)
+      if(data) setTopics(data)
+    }
+    load()
+  }, [])
   return (
     <> 
       <SearchBar text={text} setText={setText}/>

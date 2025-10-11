@@ -3,20 +3,24 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import postService from "@/services/PostService";
 import { BlogContextProvider } from "@/context/BlogContext";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
-});
+})
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
-});
+})
 
 export const metadata: Metadata = {
-  title: "Blog",
-  description: "",
-};
+  title: "Home",
+  description: "Home page of mxilia's blog website",
+  icons: {
+    icon: '/kuromi.ico',
+  }
+}
 
 export default function RootLayout({ children, } : Readonly<{ children: React.ReactNode; }>){
   const load = (async () => {

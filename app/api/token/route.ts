@@ -7,7 +7,7 @@ export async function GET(){
   const token = jwt.sign(
     { role: "frontend-client" },
     secret,
-    { expiresIn: "10m" }
+    { expiresIn: "3m" }
   )
   return NextResponse.json({ token })
 }
