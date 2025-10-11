@@ -36,7 +36,9 @@ function ContentList(){
     const load = async () => {
       const data = await fetcher("/api/topics_meta")
       console.log(data)
-      if(data) setTopics(data)
+      if(data){
+        setTopics(data)
+      }
     }
     load()
   }, [])

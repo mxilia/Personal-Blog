@@ -19,7 +19,7 @@ let currentTopic : string = ""
 let loadPromise: Promise<void> | null = null;
 
 async function dirToPost(dir : string, config : boolean) : Promise<any> {
-  const fileContent = fs.readFileSync(dir, 'utf8')
+  const fileContent = await fs.readFileSync(dir, 'utf8')
   const matterRes = matter(fileContent)
   const headings : Heading[] = []
   const processedContent = await remark()
@@ -118,7 +118,7 @@ class postService {
   }
 
   static async titleExistence(topic : string, hrefTitle : string) : Promise<boolean> {
-		if(!this.topicExistence(topic)) return false
+		if(!await this.topicExistence(topic)) return false
     if(postsLoaded){
 			const posts = postsContainer.get(topic)
 			if(posts === undefined || posts.length === 0) return false
@@ -143,7 +143,7 @@ class postService {
   }
 
   static async getPostsByTopic(topic : string) : Promise<Post[] | undefined> {
-		if(!this.topicExistence(topic)) return []
+		if(!await this.topicExistence(topic)) return []
     if(postsLoaded) return postsContainer.get(topic)
 		try {
 			const cDir = path.join(postsDir, topic)
@@ -164,7 +164,7 @@ class postService {
   }
 
   static async getPostByTitle(topic : string, hrefTitle : string) : Promise<Post | null> {
-    if(!this.titleExistence(topic, hrefTitle)) return null
+    if(!await this.titleExistence(topic, hrefTitle)) return null
 		if(postsLoaded){
 			const posts = postsContainer.get(topic)
 			const post = posts!.find(post => post.href === hrefTitle)
@@ -188,23 +188,23 @@ class postService {
   }
   
   static async getAllTopicMeta() : Promise<TopicMeta[]> {
-    if(postsLoaded) return [...topicsContainer]
+    //if(postsLoaded) return [...topicsContainer]
 		try {
 			const children =  await fs.promises.readdir(postsDir)
-			const tempMeta : TopicMeta[] = []
+			const tempMeta : TopicMeta[] = [{topic: "YO", href: 'yo', tags:['a'], date:'2020-01-01', desc:'d'}]
 			for(const file of children){
 				const fileDir = path.join(postsDir, file)
 				const stat = await fs.promises.stat(fileDir)
-				tempMeta.push({topic: "YO", href: 'yo', tags:['a'], date:'22-22-22', desc:'d'})
 				if(!stat.isDirectory()) continue
 				const configDir = path.join(fileDir, "_config.md")
+        if(!fs.existsSync(configDir)) continue
 				const topicMeta : TopicMeta = await dirToPost(configDir, true)
 				if(topicMeta) tempMeta.push(topicMeta)
 			}
 			return tempMeta
 		} catch(err) {
 			console.log("getAllTopicMeta file error:", err)
-			return [{topic: "errors", href: 'yo', tags:['a'], date:'22-22-22', desc:'d'}]
+			return []
 		}
   }
 

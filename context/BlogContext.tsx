@@ -16,7 +16,6 @@ type BlogContextType = {
   theme: string,
   setTheme: (val: 'light' | 'dark') => void,
   setShowSubTopics : (idx : number, val : boolean) => void
-  
 };
 
 const BlogContext = createContext<BlogContextType | undefined>(undefined);
@@ -63,8 +62,4 @@ export function useBlogContext(){
   const context = useContext(BlogContext);
   if (!context) throw new Error("useBlogContext must be used inside BlogContextProvider.");
   return context;
-}
-
-function Ref(arg0: boolean) {
-  throw new Error("Function not implemented.");
 }
