@@ -128,11 +128,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .prose h1 {
-  @apply text-[30px] font-bold
+  @apply text-[30px] font-bold border-b-[1px] border-[var(--border-block)]
 }
 
 .prose h2 {
-  @apply text-[21px]
+  @apply text-[21px] border-b-[1px] border-[var(--border-block)]
 }
 
 .prose h1,
@@ -141,7 +141,7 @@ h1, h2, h3, h4, h5, h6 {
 .prose h4,
 .prose h5,
 .prose h6 {
-  @apply text-[var(--header-text)] mb-1 pb-1 border-b-[1px] border-[var(--border-block)];
+  @apply text-[var(--header-text)] mb-1 pb-1;
 }
 
 .prose pre {

@@ -28,7 +28,7 @@ async function dirToPost(dir : string, config : boolean) : Promise<any> {
                                 .use(rehypeSlug)
                                 .use(() => (tree) => {
                                   visit(tree, "element", (node: any) => {
-                                   if (/^h[2-6]$/.test(node.tagName)) {
+                                   if (/^h[2]$/.test(node.tagName)) {
                                      headings.push({
                                         id: node.properties?.id || "",
                                         text: node.children?.map((c: any) => c.value || "").join("")
