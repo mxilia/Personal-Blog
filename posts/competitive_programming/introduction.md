@@ -41,7 +41,7 @@ int main(){
 - Line of codes are usually written inside main block because main function is where code execution begins so just write everything in main for now.
 
 ## Variable
-Variables are used to store values. There are mainly 5 types of variables in C++.
+Variables are used to store values that can be accessed and modified. There are mainly 5 types of variables in C++.
 - **int**: stores integer.
 - **float**: stores real number.
 - **double**: same as float but with more decimal positions.
@@ -52,7 +52,7 @@ Variables are used to store values. There are mainly 5 types of variables in C++
 variable_type variable_name = value; // This one has initial value
 variable_type variable_name; // This one does not
 ```
-__Example:__
+Example:
 ```cpp
 #include <iostream>
 using namespace std;

@@ -132,7 +132,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .prose h2 {
-  @apply text-[21px] border-b-[1px] border-[var(--border-block)]
+  @apply text-[24px] border-b-[1px] border-[var(--border-block)]
 }
 
 .prose h1,
